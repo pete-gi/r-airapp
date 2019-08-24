@@ -54,23 +54,20 @@
         justify-content: center;
         align-items: center;
         padding: 0 1.5rem;
+        margin: 0 auto;
         position: relative;
         z-index: 1;
 
-        @media screen and (min-width: 76rem) {
+        @media screen and (min-width: 760px) {
             width: 72rem;
         }
 
-        @media screen and (min-width: 96rem) {
+        @media screen and (min-width: 960px) {
             width: 65%;
         }
 
-        @media screen and (min-width: 120rem) {
-            width: 50%;
-        }
-
-        @media screen and (min-width: 160rem) {
-            width: 35%;
+        @media screen and (min-width: 1200px) {
+            width: 30%;
         }
     }
 </style>
