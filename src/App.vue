@@ -19,8 +19,8 @@
         GeolocationService
     } from '@/services/GeolocationService'
     import {
-        BackgroundService
-    } from '@/services/BackgroundService'
+        WeatherService
+    } from '@/services/WeatherService'
     export default {
         components: {
             AppBackground,
@@ -29,13 +29,16 @@
         },
         mixins: [
             GeolocationService,
-            BackgroundService,
+            WeatherService,
         ],
         created() {
             this.checkForGeolocation();
             if (this.geolocation.available) {
-                this.getCoords();
-                this.getBackground();
+                this.getCoords()
+                .then(response => {
+                    this.getWeatherByGeolocation();
+                });
+                // this.getBackground();
             }
         }
     }
@@ -51,6 +54,8 @@
         justify-content: center;
         align-items: center;
         padding: 0 1.5rem;
+        position: relative;
+        z-index: 1;
 
         @media screen and (min-width: 76rem) {
             width: 72rem;
