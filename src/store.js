@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const oldkey = 'f9e47aed091cc0d99f55ae85eb5504e6';
 const newkey = '6c585d5c8f426b70249e5bf9d8182196';
 const API_KEY = `?appid=${oldkey}`;
-const API_BASE = `https://api.openweathermap.org/data/2.5/forecast/hourly${API_KEY}`;
+const API_BASE = `http://api.openweathermap.org/data/2.5/weather`;
 
 export default new Vuex.Store({
     state: {
@@ -52,9 +52,8 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 let geolocation = getters['geolocation'];
                 let { lat, lng } = geolocation.coords;
-                let url = `${API_BASE}&lat=${lat}&lon=${lng}`;
+                let url = `${API_BASE}?lat=${lat}&lon=${lng}&APPID=f9e47aed091cc0d99f55ae85eb5504e6`;
                 Vue.http.get(url)
-                    .then(response => response.json())
                     .then(response => {
                         commit('setWeatherData', response);
                         resolve(response);

@@ -18,7 +18,7 @@
         grid-row-gap: 1.5rem;
         margin: 2rem 0;
 
-        @media screen and (min-width: 76rem) {
+        @media screen and (min-width: 760px) {
             grid-template-rows: auto;
             grid-template-columns: 2fr 1fr;
             grid-row-gap: 0;

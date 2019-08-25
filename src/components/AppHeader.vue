@@ -12,25 +12,28 @@
 </template>
 
 <script>
-import IconClouds from '@/svg/cloudy';
-export default {
-    components: {
-        IconClouds
+    import IconClouds from '@/svg/cloudy';
+    export default {
+        components: {
+            IconClouds
+        }
     }
-}
 </script>
 
 <style lang="scss">
     .app-header {
+        margin-top: auto;
 
         &__logo {
             display: flex;
             justify-content: center;
             align-items: center;
+
             &-icon {
                 width: 6.4rem;
                 height: 6.4rem;
             }
+
             &-text {
                 color: white;
             }
