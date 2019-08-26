@@ -7,13 +7,6 @@ export default {
     },
     setWeatherData(state, data) {
         state.weather.data = data;
-        if ('city' in data) {
-            state.weather.city = data.city;
-        } else if ('name' in data) {
-            state.weather.city = data.name;
-        } else if (typeof data.city === 'object' && 'name' in data.city) {
-            state.weather.city = data.city.name;
-        }
     },
     setCityPredictions(state, data) {
         state.geolocation.predictions = data;

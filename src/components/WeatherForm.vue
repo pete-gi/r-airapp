@@ -1,11 +1,12 @@
 <template>
-    <form @submit.prevent="getWeatherByCityName" class="weather-form form">
+    <form @submit.prevent="getCurrentWeather" class="weather-form form">
         <div class="form__control form__control--wide">
-            <input v-model="input" @change="getCitiesListFromInput" id="weather-form-input" type="text" class="input"
+            <input v-model="input" @keypress="getCitiesListFromInput" @change="setCityID" id="weather-form-input" type="text" class="input"
                 list="predictions-list" autocomplete="off" autofocus>
             <datalist v-if="predictions.length" id="predictions-list" class="datalist" autofocus="true">
-                <option v-for="(option, i) in predictions" :key="i" :value="option.matching_full_name">
-                    {{option.description}}
+                <option v-for="option in predictions" :key="getCityID(option._links['city:item'].href)"
+                    :value="option.matching_full_name" :id="getCityID(option._links['city:item'].href)">
+                    {{option.matching_full_name}}
                 </option>
             </datalist>
         </div>
@@ -49,6 +50,7 @@
         ],
         data() {
             return {
+                id: '',
                 input: '',
                 is_location_found: undefined
             }
@@ -59,11 +61,16 @@
             }
         },
         methods: {
+            getCityID(href) {
+                let regex = /([0-9])\w+/;
+                let result = href.match(regex)[0];
+                return result;
+            },
             getCityByGeolocation() {
                 this.is_location_found = false;
                 this.getCityByCoords()
                     .then(response => {
-                        this.input = response;
+                        this.input = response.name;
                         this.is_location_found = true;
                     })
             },
@@ -72,10 +79,15 @@
                     this.$store.dispatch('getCityByInput', this.input);
                 }, 500);
             },
-            selectCity() {
-                // document.getElementById('weather-form-input').blur();
-                // document.getElementById('predictions-list').blur();
-                this.$store.commit('setWeatherCity', this.input);
+            setCityID(e) {
+                let target = e.target;
+                let value = target.value;
+                let cityItem = this.predictions.find(p => {
+                    return value === p.matching_full_name;
+                });
+                let id = this.getCityID(cityItem._links['city:item'].href);
+                this.id = id;
+                this.$store.commit('setWeatherCity', this.id);
             }
         }
     }
@@ -131,13 +143,14 @@
         width: 3rem;
         height: 3rem;
         transform-origin: 50% 50%;
-        animation: spinAround 1.5s infinite forwards;
+        animation: spinAround 1.5s infinite forwards linear;
     }
 
     @keyframes spinAround {
         0% {
             transform: rotate(0deg);
         }
+
         100% {
             transform: rotate(360deg);
         }

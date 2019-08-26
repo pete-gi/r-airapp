@@ -33,17 +33,11 @@ export const WeatherService = {
         }
     },
     methods: {
-        getHourlyForecastByCityName() {
-            this.$store.dispatch('getHourlyForecastByCityName');
+        getHourlyForecast() {
+            this.$store.dispatch('getHourlyForecast');
         },
-        getHourlyForecastByGeolocation() {
-            this.$store.dispatch('getHourlyForecastByGeolocation');
-        },
-        getWeatherByCityName() {
-            this.$store.dispatch('getWeatherByCityName');
-        },
-        getWeatherByGeolocation() {
-            this.$store.dispatch('getWeatherByGeolocation');
+        getCurrentWeather() {
+            this.$store.dispatch('getCurrentWeather');
         }
     }
 };

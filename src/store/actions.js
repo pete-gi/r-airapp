@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
-
 const CITY_API = `https://api.teleport.org/api/cities/`;
+const LOCATIONS_API = `https://api.teleport.org/api/locations/`;
 const UNITS = '&units=metric';
 
 const WEATHER_KEY = '6c585d5c8f426b70249e5bf9d8182196';
@@ -35,15 +35,17 @@ function throw_error(error, message) {
 export default {
     getCityByCoords({ commit, getters }) {
         const { lat, lng } = getters.geolocation.coords;
-        const url = `https://api.teleport.org/api/locations/${lat},${lng}/`;
+        const url = `${LOCATIONS_API}${lat},${lng}/`;
         return new Promise((resolve, reject) => {
             Vue.http
                 .get(url)
                 .then(response => {
                     let result =
                         response.body._embedded['location:nearest-cities'][0]
-                            ._links['location:nearest-city'].name;
-                    commit('setWeatherCity', result);
+                            ._links['location:nearest-city'];
+                    let regex = /([0-9])\w+/;
+                    let cityID = result.href.match(regex)[0];
+                    commit('setWeatherCity', cityID);
                     resolve(result);
                 })
                 .catch(error => {
@@ -72,49 +74,23 @@ export default {
                 });
         });
     },
-    getHourlyForecastByCityName({ commit, getters }) {
+    getHourlyForecast({ commit, getters }) {
         let city = getters.weather.city;
-        const url = `${WEATHER_API_HOURLY_FORECAST}&q=${city}`;
-        const errorMessage = "Couldn't get weather by your city name";
+        const url = `${WEATHER_API_HOURLY_FORECAST}&id=${city}`;
+        const errorMessage = "Couldn't get weather";
         get_data(url)
             .then(response => {
-                commit_response(commit, response.body)
-                commit('setFetchedType', 'city')
+                commit_response(commit, response.body);
             })
             .catch(error => throw_error(error, errorMessage));
     },
-    getHourlyForecastByGeolocation({ commit, getters }) {
-        let geolocation = getters.geolocation;
-        const { lat, lng } = geolocation.coords;
-        const url = `${WEATHER_API_HOURLY_FORECAST}&lat=${lat}&lon=${lng}`;
-        const errorMessage = "Couldn't get weather using your coordinates";
-        get_data(url)
-            .then(response => {
-                commit_response(commit, response.body)
-                commit('setFetchedType', 'coords')
-            })
-            .catch(error => throw_error(error, errorMessage));
-    },
-    getWeatherByCityName({ commit, getters }) {
+    getCurrentWeather({ commit, getters }) {
         let city = getters.weather.city;
-        let url = `${WEATHER_API_WEATHER}&q=${city}`;
-        const errorMessage = "Couldn't get weather by your city name";
+        let url = `${WEATHER_API_WEATHER}&id=${city}`;
+        const errorMessage = "Couldn't get weather";
         get_data(url)
             .then(response => {
-                commit_response(commit, response.body)
-                commit('setFetchedType', 'city')
-            })
-            .catch(error => throw_error(error, errorMessage));
-    },
-    getWeatherByGeolocation({ commit, getters }) {
-        let geolocation = getters.geolocation;
-        const { lat, lng } = geolocation.coords;
-        const url = `${WEATHER_API_WEATHER}&lat=${lat}&lon=${lng}`;
-        const errorMessage = "Couldn't get weather using your coordinates";
-        get_data(url)
-            .then(response => {
-                commit_response(commit, response.body)
-                commit('setFetchedType', 'coords')
+                commit_response(commit, response.body);
             })
             .catch(error => throw_error(error, errorMessage));
     }
