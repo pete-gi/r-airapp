@@ -10,7 +10,10 @@ export const WeatherService = {
             return this.weather.by_coords;
         },
         temp() {
-            return this.weather.main;
+            if (this.weather) {
+                let temp = new String(this.weather.main.temp);
+                return temp.split('.')[0];
+            }
         },
         date() {
             let date = new Date();
@@ -24,12 +27,16 @@ export const WeatherService = {
             return `${day}.${month}.${year}`;
         },
         location() {
-            let name = this.weather.name;
-            let country = this.weather.sys.country;
-            return `${name}, ${country}`;
+            if (this.weather) {
+                let name = this.weather.name;
+                let country = this.weather.sys.country;
+                return `${name}, ${country}`;
+            }
         },
         description() {
-            return this.weather.weather[0].description;
+            if (this.weather) {
+                return this.weather.weather[0].description;
+            }
         }
     },
     methods: {
@@ -38,6 +45,9 @@ export const WeatherService = {
         },
         getCurrentWeather() {
             this.$store.dispatch('getCurrentWeather');
+        },
+        get5DaysForecast() {
+            this.$store.dispatch('get5DaysForecast');
         }
     }
 };

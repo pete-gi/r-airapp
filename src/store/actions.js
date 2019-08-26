@@ -9,6 +9,7 @@ const WEATHER_API_KEY = `?appid=${WEATHER_KEY}`;
 const WEATHER_API_BASE = `http://api.openweathermap.org/data/2.5`;
 const WEATHER_API_WEATHER = `${WEATHER_API_BASE}/weather${WEATHER_API_KEY}${UNITS}`;
 const WEATHER_API_HOURLY_FORECAST = `${WEATHER_API_BASE}/forecast/hourly${WEATHER_API_KEY}${UNITS}`;
+const WEATHER_API_5_DAYS = `${WEATHER_API_BASE}/forecast${WEATHER_API_KEY}${UNITS}`;
 
 function get_data(url) {
     return new Promise((resolve, reject) => {
@@ -77,6 +78,16 @@ export default {
     getHourlyForecast({ commit, getters }) {
         let city = getters.weather.city;
         const url = `${WEATHER_API_HOURLY_FORECAST}&id=${city}`;
+        const errorMessage = "Couldn't get weather";
+        get_data(url)
+            .then(response => {
+                commit_response(commit, response.body);
+            })
+            .catch(error => throw_error(error, errorMessage));
+    },
+    get5DaysForecast({ commit, getters }) {
+        let city = getters.weather.city;
+        const url = `${WEATHER_API_5_DAYS}&id=${city}`;
         const errorMessage = "Couldn't get weather";
         get_data(url)
             .then(response => {

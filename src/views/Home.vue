@@ -21,7 +21,10 @@
         },
         mixins: [
             WeatherService
-        ]
+        ],
+        mounted() {
+            this.$store.commit('clearWeatherData');
+        }
     }
 </script>
 

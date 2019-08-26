@@ -14,8 +14,8 @@ export default new Router({
       component: Home
     },
     {
-      path: '/:city',
-      name: 'default',
+      path: '/details',
+      name: 'details',
       component: () => import(/* webpackChunkName: "details" */ './views/Details.vue')
     }
   ]

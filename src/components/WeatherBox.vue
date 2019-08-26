@@ -1,7 +1,7 @@
 <template>
     <div class="weather-box">
         <div class="weather-temperature">
-            {{temp.temp}}<sup>o</sup>C
+            {{temp}}<sup>o</sup>C
         </div>
         <div class="weather-info">
             <p class="weather-date">
@@ -35,6 +35,7 @@
         flex-direction: row;
         align-items: center;
         padding: 2rem 1.5rem;
+        margin-bottom: 1rem;
         background-color: rgba(white, 0.35);
         color: white;
         position: relative;

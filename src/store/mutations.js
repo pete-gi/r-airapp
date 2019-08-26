@@ -20,5 +20,8 @@ export default {
         } else if (value === 'coords') {
             state.weather.by_coords = true;
         }
+    },
+    clearWeatherData(state) {
+        state.weather.data = undefined;
     }
 };
