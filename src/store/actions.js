@@ -91,7 +91,7 @@ export default {
         const errorMessage = "Couldn't get weather";
         get_data(url)
             .then(response => {
-                commit_response(commit, response.body);
+                commit('setForecastData', response.body);
             })
             .catch(error => throw_error(error, errorMessage));
     },

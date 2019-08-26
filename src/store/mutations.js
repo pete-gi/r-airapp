@@ -8,6 +8,9 @@ export default {
     setWeatherData(state, data) {
         state.weather.data = data;
     },
+    setForecastData(state, data) {
+        state.weather.forecast = data;
+    },
     setCityPredictions(state, data) {
         state.geolocation.predictions = data;
     },
@@ -22,6 +25,6 @@ export default {
         }
     },
     clearWeatherData(state) {
-        state.weather.data = undefined;
+        state.weather.data = undefined; 
     }
 };

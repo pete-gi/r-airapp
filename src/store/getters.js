@@ -10,5 +10,8 @@ export default {
     },
     predictions: state => {
         return state.geolocation.predictions;
+    },
+    forecast: state => {
+        return state.weather.forecast;
     }
 }

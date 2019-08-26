@@ -13,6 +13,7 @@ export default {
     },
     weather: {
         data: undefined,
+        forecast: undefined,
         city: '',
         by_city: false,
         by_coords: false
