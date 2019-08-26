@@ -8,6 +8,22 @@ export const GeolocationService = {
         checkForGeolocation() {
             if (window.navigator.geolocation) {
                 this.$store.commit('toggleGeolocationAvailability', true);
+                return true;
+            }
+            return false;
+        },
+        getCityByCoords() {
+            if (this.checkForGeolocation()) {
+                return new Promise((resolve, reject) => {
+                    this.$store
+                        .dispatch('getCityByCoords')
+                        .then(response => {
+                            resolve(response);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                });
             }
         },
         getCoords() {
