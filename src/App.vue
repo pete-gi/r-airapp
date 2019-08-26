@@ -34,10 +34,7 @@
         created() {
             this.checkForGeolocation();
             if (this.geolocation.available) {
-                this.getCoords()
-                .then(response => {
-                    this.getWeatherByGeolocation();
-                });
+                this.getCoords();
                 // this.getBackground();
             }
         }
