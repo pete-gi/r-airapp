@@ -26,5 +26,6 @@ export default {
     },
     clearWeatherData(state) {
         state.weather.data = undefined; 
+        state.weather.forecast = undefined; 
     }
 };

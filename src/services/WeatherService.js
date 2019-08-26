@@ -3,12 +3,6 @@ export const WeatherService = {
         weather() {
             return this.$store.getters.weather.data;
         },
-        is_fetched_by_city() {
-            return this.weather.by_city;
-        },
-        is_fetched_by_coords() {
-            return this.weather.by_coords;
-        },
         temp() {
             if (this.weather) {
                 let temp = new String(this.weather.main.temp);

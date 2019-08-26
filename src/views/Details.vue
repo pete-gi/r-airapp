@@ -21,34 +21,26 @@
                 </div>
             </header>
             <div class="weather-list__body">
-                <div v-for="(item, i) in forecast.list" :key="i" class="weather-list__row">
-                    <template v-if="diffDate(item.dt_txt) || i === 0">
-                        <div :class="{'mt': diffDate(item.dt_txt)}" class="weather-list__item weather-list__item--large">
-                            {{ getDay(item.dt_txt) }}
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div class="weather-list__item">
-                            {{ getHour(item.dt_txt) }}
-                        </div>
-                        <div class="weather-list__item">
-                            {{ getTemp(item.main.temp) }}<sup>o</sup>C
-                        </div>
-                        <div class="weather-list__item">
-                            {{ item.weather[0].description }}
-                        </div>
-                    </template>
-                </div>
+                <template v-for="(item, i) in forecast.list">
+                    <weather-body-row v-if="diffDate(item.dt_txt) || i === 0" :item="item" :key="item.dt"></weather-body-row>
+                    <weather-body-row-items :item="item" :key="i"></weather-body-row-items>
+                </template>
             </div>
         </div>
     </main>
 </template>
 
 <script>
+    import WeatherBodyRow from '@/components/WeatherBodyRow';
+    import WeatherBodyRowItems from '@/components/WeatherBodyRowItems';
     import {
         WeatherService
     } from '@/services/WeatherService';
     export default {
+        components: {
+            WeatherBodyRow,
+            WeatherBodyRowItems
+        },
         mixins: [
             WeatherService
         ],
@@ -58,28 +50,6 @@
             }
         },
         methods: {
-            getDay(value) {
-                let date = new Date(value);
-                let d = date.getDay();
-                let m = date.getMonth();
-                let day = d.toString().length === 1 ? `0${d}` : d;
-                let month = m.toString().length === 1 ? `0${m}` : m;
-                let listedDay = `${day}.${month}`;
-                if (this.listedDay !== listedDay) {
-                    this.listedDay = listedDay;
-                }
-                return listedDay;
-            },
-            getHour(value) {
-                let date = new Date(value);
-                let h = date.getHours();
-                let hour = h.toString().length === 1 ? `0${h}` : h;
-                return `${hour}:00`;
-            },
-            getTemp(value) {
-                let temp = new String(value);
-                return temp.split('.')[0];
-            },
             diffDate(value) {
                 let date = new Date(value);
                 let h = date.getHours();
@@ -95,7 +65,7 @@
             }
         },
         created() {
-            if (this.weather) {
+            if (this.weather && !this.forecast) {
                 this.get5DaysForecast();
             } else {
                 this.$router.push({
@@ -113,7 +83,7 @@
         justify-content: space-around;
         align-items: center;
         padding: 2rem 1.5rem;
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
         background-color: rgba(white, 0.35);
         color: white;
         position: relative;
